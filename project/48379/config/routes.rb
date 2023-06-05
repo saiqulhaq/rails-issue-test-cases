@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  resources :devices, only: [] do
+    collection do 
+      post :create_or_find 
+      post :find_or_create
+      get :status
+    end
+  end
   root to: "pages#home"
 
   get "/up/", to: "up#index", as: :up
