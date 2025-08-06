@@ -1,29 +1,61 @@
 {
-	"name": "Ruby on Rails (Community)",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
-
-	// Configure tool-specific properties.
-	"customizations": {
-		// Configure properties specific to VS Code.
-		"vscode": {
-			// Add the IDs of extensions you want installed when the container is created.
-			"extensions": [
-				"rebornix.Ruby"
-			]
-		}
-	},
-	
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
-
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "ruby --version",
-
-	// Set `remoteUser` to `root` to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "vscode",
-	"features": {
-		"ghcr.io/warrenbuckley/codespace-features/sqlite:1": {}
-	}
+  "name": "Rails Issue Test Cases",
+  "image": "ghcr.io/rails/devcontainer/images/ruby:3.3.0",
+  "features": {
+    "ghcr.io/rails/devcontainer/features/activestorage": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "shopify.ruby-lsp",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.vscode-json",
+        "redhat.vscode-yaml",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "ruby.lsp.enabledFeatures": {
+          "codeActions": true,
+          "diagnostics": true,
+          "documentHighlights": true,
+          "documentLink": true,
+          "documentSymbol": true,
+          "foldingRange": true,
+          "formatting": true,
+          "hover": true,
+          "inlayHint": true,
+          "onTypeFormatting": true,
+          "selectionRange": true,
+          "semanticHighlighting": true,
+          "completion": true,
+          "codeLens": true,
+          "definition": true,
+          "workspaceSymbol": true,
+          "signatureHelp": true
+        }
+      }
+    }
+  },
+  "forwardPorts": [3000, 8000, 5432, 6379],
+  "portsAttributes": {
+    "3000": {
+      "label": "Rails Server"
+    },
+    "8000": {
+      "label": "Docker Rails (48379)"
+    },
+    "5432": {
+      "label": "PostgreSQL"
+    },
+    "6379": {
+      "label": "Redis"
+    }
+  },
+  "postCreateCommand": "echo 'Dev container ready! Use the following commands to work with different test cases:' && echo '1. For issue #48291: cd project && ruby 48291.rb' && echo '2. For issue #48379: cd project/48379 && docker compose up --build' && echo '3. For issue #50115: cd project/50115/pr_50115 && bundle install && rails test'",
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "RAILS_ENV": "development"
+  }
 }
